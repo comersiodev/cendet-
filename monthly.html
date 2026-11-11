@@ -1,0 +1,827 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Monthly Report Comérsio</title>
+<link rel="stylesheet" href="style.css">
+<style>
+  @font-face{
+    font-family: 'OswaldBold';
+    src: url('oswald-bold.ttf') format('truetype');
+    font-weight: 700;
+    font-style: normal;
+  }
+  @font-face{
+    font-family: 'FiraCondBold';
+    src: url('firasanscondensed-bold.otf') format('opentype');
+    font-weight: 700;
+    font-style: normal;
+  }
+  @font-face{
+    font-family: 'FiraCondBook';
+    src: url('firasanscondensed-book.otf') format('opentype');
+    font-weight: 400;
+    font-style: normal;
+  }
+
+  :root{
+    --emas: #e8b13c;
+    --emas-terang: #ffd166;
+    --gelap: #0a0a0a;
+  }
+
+  *{
+    box-sizing: border-box;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  html, body{
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    min-height: 100vh;
+    font-family: 'FiraCondBook', sans-serif;
+    background: #0a0a0a !important;
+    color: #ffffff;
+    overflow-x: hidden;
+  }
+
+  .bg-layer{
+    position: fixed;
+    inset: 0;
+    background-image: url('background.jpg');
+    background-size: cover;
+    background-position: center center;
+    background-repeat: no-repeat;
+    z-index: 0;
+  }
+
+  .bg-dim{
+    position: fixed;
+    inset: 0;
+    background: rgba(6, 10, 7, 0.82);
+    z-index: 1;
+  }
+
+  .mbanking-topbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 60px;
+    background: rgba(10, 14, 11, 0.95);
+    border-bottom: 1px solid rgba(232, 177, 60, 0.25);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 16px;
+    z-index: 20;
+    backdrop-filter: blur(8px);
+  }
+
+  .mbanking-brand-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .mbanking-brand {
+    font-family: 'OswaldBold', sans-serif;
+    font-size: 1.1rem;
+    color: #ffffff;
+    letter-spacing: 0.5px;
+    line-height: 1.1;
+  }
+
+  .mbanking-brand span {
+    color: var(--emas-terang);
+  }
+
+  .mbanking-greeting-top {
+    font-size: 0.7rem;
+    color: var(--emas-terang);
+    font-family: 'FiraCondBold', sans-serif;
+    margin-top: 1px;
+    line-height: 1;
+  }
+
+  .topbar-right-box {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .date-badge-top {
+    font-family: 'FiraCondBold', sans-serif;
+    font-size: 0.8rem;
+    color: var(--emas-terang);
+    background: rgba(232, 177, 60, 0.1);
+    border: 1px solid rgba(232, 177, 60, 0.3);
+    padding: 4px 8px;
+    border-radius: 8px;
+  }
+
+  .profile-circle-btn {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    border: 2px solid var(--emas-terang);
+    background: #121814;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    text-decoration: none;
+    transition: transform 0.2s, box-shadow 0.2s;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.5);
+  }
+
+  .profile-circle-btn:hover {
+    transform: scale(1.08);
+    box-shadow: 0 0 12px rgba(255, 209, 102, 0.4);
+  }
+
+  .profile-circle-btn svg, .profile-circle-btn img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .profile-circle-btn svg {
+    width: 20px;
+    height: 20px;
+    fill: var(--emas-terang);
+    padding: 2px;
+  }
+
+  .content-wrap {
+    position: relative;
+    z-index: 5;
+    padding: 76px 16px 100px 16px;
+    max-width: 800px;
+    margin: 0 auto;
+  }
+
+  .filter-bulan-wrap {
+    margin-bottom: 15px;
+    background: rgba(12, 17, 13, 0.85);
+    border: 1.5px solid rgba(232, 177, 60, 0.3);
+    border-radius: 12px;
+    padding: 12px 16px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .filter-label {
+    font-family: 'FiraCondBold', sans-serif;
+    font-size: 0.85rem;
+    color: var(--emas-terang);
+  }
+
+  .custom-dropdown-btn {
+    background: #111;
+    border: 1px solid var(--emas);
+    color: var(--emas-terang);
+    padding: 8px 14px;
+    border-radius: 8px;
+    font-family: 'FiraCondBold', sans-serif;
+    font-size: 0.85rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .popupBox {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.85);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 999999;
+    padding: 20px;
+    backdrop-filter: blur(5px);
+  }
+
+  .popupBox.active {
+    display: flex;
+  }
+
+  .popupContent {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    max-width: 360px;
+    background: #0d120f;
+    border: 2px solid var(--emas-terang);
+    border-radius: 18px;
+    padding: 20px;
+    max-height: 80vh;
+    overflow-y: auto;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.8);
+  }
+
+  .popupContent h2 {
+    margin-top: 0;
+    font-family: 'FiraCondBold', sans-serif;
+    color: var(--emas-terang);
+    text-align: center;
+    font-size: 1.1rem;
+    margin-bottom: 12px;
+  }
+
+  .month-option-item {
+    background: #111;
+    border: 1px solid rgba(255, 209, 102, 0.3);
+    color: #fff;
+    padding: 12px;
+    border-radius: 10px;
+    text-align: center;
+    font-family: 'FiraCondBold', sans-serif;
+    font-size: 0.9rem;
+    margin-bottom: 8px;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .month-option-item:hover, .month-option-item.selected {
+    background: rgba(232, 177, 60, 0.2);
+    border-color: var(--emas-terang);
+    color: var(--emas-terang);
+  }
+
+  .report-container {
+    padding: 0;
+    max-width: 100%;
+    margin: 0 auto;
+  }
+
+  .sheet-card {
+    background: rgba(12, 17, 13, 0.92);
+    border: 2px solid var(--emas);
+    border-radius: 18px;
+    padding: 20px;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.6);
+    margin-bottom: 20px;
+  }
+
+  .sheet-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid rgba(255, 209, 102, 0.3);
+    padding-bottom: 12px;
+    margin-bottom: 16px;
+  }
+
+  .sheet-header h2 {
+    margin: 0;
+    font-family: 'FiraCondBold', sans-serif;
+    color: var(--emas-terang);
+    font-size: 1.1rem;
+    letter-spacing: 0.5px;
+  }
+
+  .sheet-header span {
+    font-size: 0.78rem;
+    color: #aaa;
+  }
+
+  .table-responsive {
+    width: 100%;
+    overflow-x: auto;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.85rem;
+    white-space: nowrap;
+  }
+
+  th, td {
+    padding: 10px 8px;
+    text-align: center;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  }
+
+  th {
+    font-family: 'FiraCondBold', sans-serif;
+    color: var(--emas-terang);
+    background: #0d120f;
+    border-bottom: 2px solid var(--emas);
+  }
+
+  .financial-summary {
+    background: #000;
+    border: 1px solid rgba(232, 177, 60, 0.3);
+    border-radius: 14px;
+    padding: 16px;
+    margin-top: 16px;
+  }
+
+  .summary-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.95rem;
+    margin-bottom: 8px;
+    font-family: 'FiraCondBold', sans-serif;
+  }
+
+  .summary-row:last-child {
+    margin-bottom: 0;
+  }
+
+  .summary-row.total-final {
+    border-top: 1px solid rgba(255, 209, 102, 0.3);
+    padding-top: 8px;
+    margin-top: 8px;
+    font-size: 1.05rem;
+    color: var(--emas-terang);
+  }
+
+  .mbanking-bottom-nav {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 64px;
+    background: rgba(10, 14, 11, 0.96);
+    border-top: 1px solid rgba(232, 177, 60, 0.3);
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    z-index: 99999;
+    backdrop-filter: blur(8px);
+  }
+
+  .nav-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    color: #888;
+    font-family: 'FiraCondBold', sans-serif;
+    font-size: 0.55rem;
+    gap: 3px;
+    padding: 4px 0;
+    transition: color 0.2s;
+  }
+
+  .nav-item img {
+    width: 20px;
+    height: 20px;
+    object-fit: contain;
+    filter: grayscale(100%) opacity(0.6);
+    transition: filter 0.2s;
+  }
+
+  .nav-item.active, .nav-item:hover {
+    color: var(--emas-terang);
+  }
+
+  .nav-item.active img, .nav-item:hover img {
+    filter: none;
+  }
+
+  /* ================= PAGE LOADING OVERLAY (RINGAN) ================= */
+  .page-loading-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(5, 8, 6, 0.92);
+    z-index: 2147483647;
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 14px;
+    pointer-events: all;
+  }
+  .page-loading-overlay.active { display: flex; }
+  .page-loading-overlay img {
+    width: 80px;
+    height: 80px;
+    object-fit: contain;
+  }
+  .page-loading-overlay .loading-text {
+    color: var(--emas-terang);
+    font-family: 'FiraCondBold', sans-serif;
+    font-size: 0.8rem;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    opacity: 0.85;
+  }
+</style>
+</head>
+
+<body>
+
+  <div class="bg-layer"></div>
+  <div class="bg-dim"></div>
+
+  <div class="mbanking-topbar">
+    <div class="mbanking-brand-container">
+      <div class="mbanking-brand">Cendetszz <span>by K</span></div>
+      <div class="mbanking-greeting-top">Laporan Bulanan</div>
+    </div>
+    <div class="topbar-right-box">
+      <div class="date-badge-top" id="dateText">01 Jan 2026</div>
+      <a href="profile.html" class="profile-circle-btn" id="topProfileBtn" title="Pengaturan Profile">
+        <svg viewBox="0 0 24 24">
+          <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z"/>
+        </svg>
+      </a>
+    </div>
+  </div>
+
+<div class="content-wrap">
+    <div class="filter-bulan-wrap">
+        <span class="filter-label">Filter Bulan Laporan:</span>
+        <button type="button" class="custom-dropdown-btn" id="currentMonthLabel" onclick="openMonthModal()">
+            Pilih Bulan ▾
+        </button>
+    </div>
+
+    <div class="report-container">
+        <div class="sheet-card">
+            <div class="sheet-header">
+                <h2 id="monthlyTitle">MONTHLY REPORT</h2>
+                <span id="dateNow"></span>
+            </div>
+
+            <div class="table-responsive">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Tanggal</th>
+                            <th>ID Customer</th>
+                            <th>Produk</th>
+                            <th>Modal / Jual / Cuan</th>
+                            <th>Charge</th>
+                            <th>Utang Sisa</th>
+                            <th>Dibayar</th>
+                            <th>Tip</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody id="monthlyTable"></tbody>
+                </table>
+            </div>
+
+            <div class="financial-summary">
+                <div class="summary-row">
+                    <span style="color:#aaa;">Total Utang Sisa:</span>
+                    <span style="color: #ff5555;">Rp <span id="totalUtang">0</span></span>
+                </div>
+                <div class="summary-row">
+                    <span style="color:#aaa;">Total Dibayar:</span>
+                    <span style="color: #4caf5e;">Rp <span id="totalBayar">0</span></span>
+                </div>
+                <div class="summary-row">
+                    <span style="color:#aaa;">Total Charge :</span>
+                    <span style="color: #ff9800;">Rp <span id="totalCharge">0</span></span>
+                </div>
+                <div class="summary-row">
+                    <span style="color:#aaa;">Total Tip:</span>
+                    <span style="color: var(--emas-terang);">Rp <span id="totalTip">0</span></span>
+                </div>
+                <div class="summary-row">
+                    <span style="color:#aaa;">Total Keuntungan :</span>
+                    <span style="color: var(--emas-terang);">Rp <span id="totalMargin">0</span></span>
+                </div>
+                <div class="summary-row total-final">
+                    <span>BULAN :</span>
+                    <span id="bulanSummary">-</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="monthModal" class="popupBox">
+    <div class="popupContent">
+        <h2>PILIH BULAN LAPORAN</h2>
+        <div id="monthOptionsContainer"></div>
+        <div style="margin-top: 15px;">
+            <button type="button" style="width: 100%; height: 42px; background: #222; color: white; border: 1px solid #444; border-radius: 10px; font-family: 'FiraCondBold', sans-serif; cursor: pointer;" onclick="closeMonthModal()">Batal</button>
+        </div>
+    </div>
+</div>
+
+<nav class="mbanking-bottom-nav">
+    <a href="index.html" class="nav-item">
+        <img src="icon.png" alt="Home">
+        <span>Home</span>
+    </a>
+    <a href="product.html" class="nav-item">
+        <img src="voucher.png" alt="Produk">
+        <span>Produk</span>
+    </a>
+    <a href="debt.html" class="nav-item">
+        <img src="debt.png" alt="Utang">
+        <span>Utang</span>
+    </a>
+    <a href="customer.html" class="nav-item">
+        <img src="nama.png" alt="Customer">
+        <span>Customer</span>
+    </a>
+    <a href="recap.html" class="nav-item">
+        <img src="rekap.png" alt="Rekap">
+        <span>Rekap</span>
+    </a>
+    <a href="monthly.html" class="nav-item active">
+        <img src="pembukuan.png" alt="Laporan">
+        <span>Laporan</span>
+    </a>
+    <a href="profile.html" class="nav-item" title="Pengaturan Profil">
+        <svg viewBox="0 0 24 24" style="width:20px; height:20px; fill:currentColor; filter:none;"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z"/></svg>
+        <span>Profil</span>
+    </a>
+</nav>
+
+<!-- ================= PAGE LOADING OVERLAY ================= -->
+<div id="pageLoadingOverlay" class="page-loading-overlay">
+    <img src="loading.webp" alt="Loading...">
+    <div class="loading-text">Memuat Halaman...</div>
+</div>
+
+<script>
+/* =========================================================
+   PAGE LOADING OVERLAY
+========================================================= */
+(function preloadLoadingGif(){
+    const img = new Image();
+    img.src = 'loading.webp';
+})();
+
+function showPageLoading(){
+    const ov = document.getElementById('pageLoadingOverlay');
+    if (ov) ov.classList.add('active');
+}
+
+function navigateWithLoading(url){
+    if (!url) return;
+    showPageLoading();
+    setTimeout(() => { window.location.href = url; }, 450);
+}
+
+/* Handler global untuk semua <a href="*.html"> */
+document.addEventListener('click', function(e){
+    const link = e.target.closest('a[href]');
+    if (!link) return;
+    if (link.classList.contains('nav-item')) return;
+
+    const href = link.getAttribute('href');
+    if (!href) return;
+    if (href.startsWith('http') || href.startsWith('javascript') ||
+        href.startsWith('#') || href.startsWith('mailto') ||
+        href.startsWith('tel') || href.startsWith('blob')) return;
+    if (!href.endsWith('.html')) return;
+
+    e.preventDefault();
+    navigateWithLoading(href);
+});
+
+/* Bottom nav: loading */
+document.querySelectorAll('.nav-item').forEach(item => {
+  const href = item.getAttribute('href');
+  if (item.tagName === 'A' && href && href.endsWith('.html')){
+    item.addEventListener('click', function(e){
+      e.preventDefault();
+      navigateWithLoading(href);
+    });
+  }
+});
+
+/* =========================
+   DATE & TIME
+========================= */
+window.onload = function(){
+    updateDateOnly();
+    updateDateTime();
+    setInterval(updateDateTime, 1000);
+    renderMonthlyReport();
+
+    const savedPic = localStorage.getItem("profile_picture") || localStorage.getItem("user_avatar");
+    if(savedPic) {
+      const topBtn = document.getElementById("topProfileBtn");
+      topBtn.innerHTML = `<img src="${savedPic}" alt="Profile">`;
+    }
+}
+
+function updateDateOnly(){
+    const now = new Date();
+    const optionsDate = { day: '2-digit', month: 'short', year: 'numeric' };
+    document.getElementById("dateText").innerText = now.toLocaleDateString('id-ID', optionsDate);
+}
+
+function updateDateTime(){
+    const now = new Date();
+    const day = String(now.getDate()).padStart(2,"0");
+    const month = String(now.getMonth()+1).padStart(2,"0");
+    const year = String(now.getFullYear()).slice(-2);
+    const hours = String(now.getHours()).padStart(2,"0");
+    const minutes = String(now.getMinutes()).padStart(2,"0");
+    const seconds = String(now.getSeconds()).padStart(2,"0");
+
+    document.getElementById("dateNow").innerText = `${day}/${month}/${year} • ${hours}:${minutes}:${seconds}`;
+}
+
+/* =========================
+   PARSING TANGGAL & WAKTU
+========================= */
+function parseWaktu(str){
+    if(!str) return 0;
+    str = String(str).trim();
+    const m = str.match(/^(\d{1,2})[\/\-](\d{1,2})[\/\-](\d{4})[,\s]*(\d{1,2})[.:](\d{1,2})(?:[.:](\d{1,2}))?/);
+    if(m){
+        const d = parseInt(m[1], 10);
+        const mo = parseInt(m[2], 10) - 1;
+        const y = parseInt(m[3], 10);
+        const h = parseInt(m[4], 10) || 0;
+        const mi = parseInt(m[5], 10) || 0;
+        const s = parseInt(m[6], 10) || 0;
+        return new Date(y, mo, d, h, mi, s).getTime();
+    }
+    const t = new Date(str).getTime();
+    return isNaN(t) ? 0 : t;
+}
+
+function getItemTime(item){
+    return parseWaktu(item.waktu || item.tanggal || item.waktuArchive);
+}
+
+/* =========================
+   PARSING DATA (DEBTS + ARCHIVED DEBTS)
+========================= */
+const debts = JSON.parse(localStorage.getItem("debts")) || {};
+const archivedDebts = JSON.parse(localStorage.getItem("archivedDebts")) || {};
+let allTransactions = [];
+
+for(const customerId in debts){
+    debts[customerId].forEach(item => {
+        allTransactions.push({
+            customerId: customerId,
+            _status: 'Belum Lunas',
+            ...item
+        });
+    });
+}
+
+for(const customerId in archivedDebts){
+    archivedDebts[customerId].forEach(item => {
+        allTransactions.push({
+            customerId: customerId,
+            _status: 'Lunas',
+            ...item
+        });
+    });
+}
+
+allTransactions.sort((a, b) => getItemTime(a) - getItemTime(b));
+
+function extractMonthKey(dateStr){
+    if(!dateStr) return null;
+    let clean = dateStr.split(",")[0].trim();
+    let parts = clean.split("/");
+    if(parts.length === 3){
+        let d = parts[0].padStart(2, '0');
+        let m = parts[1].padStart(2, '0');
+        let y = parts[2];
+        if(y.length === 4 && m.length <= 2){
+            return `${y}-${m}`;
+        }
+    }
+    return null;
+}
+
+let availableMonthsMap = {};
+
+allTransactions.forEach(item => {
+    let rawDate = item.waktu || item.tanggal || item.waktuArchive || "";
+    let mKey = extractMonthKey(rawDate);
+    if(mKey){
+        availableMonthsMap[mKey] = true;
+    }
+});
+
+const currentDateObj = new Date();
+const currentYearKey = currentDateObj.getFullYear();
+const currentMonthKey = String(currentDateObj.getMonth() + 1).padStart(2, '0');
+const defaultMonthKey = `${currentYearKey}-${currentMonthKey}`;
+availableMonthsMap[defaultMonthKey] = true;
+
+let sortedMonths = Object.keys(availableMonthsMap).sort().reverse();
+const namaBulanArr = [
+    "JANUARI", "FEBRUARI", "MARET", "APRIL", "MEI", "JUNI", 
+    "JULI", "AGUSTUS", "SEPTEMBER", "OKTOBER", "NOVEMBER", "DESEMBER"
+];
+
+let selectedMonthValue = availableMonthsMap[defaultMonthKey] ? defaultMonthKey : sortedMonths[0];
+
+function buildMonthOptions(){
+    const container = document.getElementById("monthOptionsContainer");
+    container.innerHTML = "";
+
+    sortedMonths.forEach(mKey => {
+        let [yr, mNum] = mKey.split("-");
+        let mName = namaBulanArr[parseInt(mNum) - 1] || mNum;
+        let div = document.createElement("div");
+        div.className = `month-option-item ${mKey === selectedMonthValue ? 'selected' : ''}`;
+        div.innerText = `${mName} ${yr}`;
+        div.onclick = function(){
+            selectedMonthValue = mKey;
+            closeMonthModal();
+            renderMonthlyReport();
+        };
+        container.appendChild(div);
+    });
+}
+
+function openMonthModal(){
+    buildMonthOptions();
+    document.getElementById("monthModal").classList.add("active");
+}
+
+function closeMonthModal(){
+    document.getElementById("monthModal").classList.remove("active");
+}
+
+function renderMonthlyReport(){
+    const table = document.getElementById("monthlyTable");
+    table.innerHTML = "";
+
+    let totalUtang = 0;
+    let totalBayar = 0;
+    let totalTip = 0;
+    let totalMargin = 0;
+    let totalCharge = 0;
+    let filteredCount = 0;
+
+    allTransactions.forEach(item => {
+        let rawDate = item.waktu || item.tanggal || item.waktuArchive || "";
+        let itemMonthKey = extractMonthKey(rawDate);
+
+        if(itemMonthKey === selectedMonthValue) {
+            filteredCount++;
+            const modal = item.modal || 0;
+            const harga = item.harga || 0;
+            const charge = item.charge || 0;
+            const profit = (harga - modal) + charge;
+            const dibayar = item.dibayar || 0;
+            const sisaUtang = (harga + charge) - dibayar;
+            const tipItem = item.tip || 0;
+
+            const statusColor = item._status === 'Lunas' ? '#4caf5e' : '#ff5555';
+
+            const row = document.createElement("tr");
+            row.innerHTML = `
+                <td style="color: #aaa; font-size: 0.78rem;">${rawDate || "-"}</td>
+                <td style="font-family: 'FiraCondBold', sans-serif; color: var(--emas-terang);">${item.customerId}</td>
+                <td>${item.produk}</td>
+                <td>
+                    <span style="color:#aaa;">Modal: Rp ${modal.toLocaleString("id-ID")}</span><br>
+                    <span style="color:var(--emas-terang);">Jual: Rp ${harga.toLocaleString("id-ID")}</span><br>
+                    <small style="color:#4caf5e;">Cuan: Rp ${profit.toLocaleString("id-ID")}</small>
+                </td>
+                <td style="color: #ff9800; font-family: 'FiraCondBold', sans-serif;">Rp ${charge.toLocaleString("id-ID")}</td>
+                <td style="color: #ff5555;">Rp ${sisaUtang > 0 ? sisaUtang.toLocaleString("id-ID") : '0'}</td>
+                <td style="color: #4caf5e;">Rp ${dibayar.toLocaleString("id-ID")}</td>
+                <td style="color: var(--emas-terang);">Rp ${tipItem.toLocaleString("id-ID")}</td>
+                <td style="color:${statusColor}; font-family:'FiraCondBold',sans-serif;">${item._status}</td>
+            `;
+            table.appendChild(row);
+
+            totalUtang += (sisaUtang > 0 ? sisaUtang : 0);
+            totalBayar += dibayar;
+            totalTip += tipItem;
+            totalMargin += profit;
+            totalCharge += charge;
+        }
+    });
+
+    if(filteredCount === 0){
+        table.innerHTML = `<tr><td colspan="9" style="color:#777; padding: 20px;">Tidak ada transaksi pada bulan ini.</td></tr>`;
+    }
+
+    let [sYr, sMn] = selectedMonthValue.split("-");
+    let headerMonthName = namaBulanArr[parseInt(sMn) - 1] || "";
+    document.getElementById("monthlyTitle").innerText = `REPORT - ${headerMonthName} ${sYr}`;
+    document.getElementById("currentMonthLabel").innerText = `${headerMonthName} ${sYr} ▾`;
+    document.getElementById("bulanSummary").innerText = `${headerMonthName} ${sYr}`;
+
+    document.getElementById("totalUtang").innerText = totalUtang.toLocaleString("id-ID");
+    document.getElementById("totalBayar").innerText = totalBayar.toLocaleString("id-ID");
+    document.getElementById("totalTip").innerText = totalTip.toLocaleString("id-ID");
+    document.getElementById("totalMargin").innerText = totalMargin.toLocaleString("id-ID");
+    document.getElementById("totalCharge").innerText = totalCharge.toLocaleString("id-ID");
+}
+</script>
+
+</body>
+</html>

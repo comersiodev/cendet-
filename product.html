@@ -1,0 +1,930 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Debt Comérsio - Produk</title>
+<link rel="stylesheet" href="style.css">
+<style>
+  @font-face{ font-family:'OswaldBold'; src:url('oswald-bold.ttf') format('truetype'); font-weight:700; }
+  @font-face{ font-family:'FiraCondBold'; src:url('firasanscondensed-bold.otf') format('opentype'); font-weight:700; }
+  @font-face{ font-family:'FiraCondBook'; src:url('firasanscondensed-book.otf') format('opentype'); font-weight:400; }
+
+  :root{
+    --emas:#e8b13c; --emas-terang:#ffd166; --gelap:#0a0a0a;
+    --oranye:#ff9f1a; --merah:#ff4d4d; --hijau-terang:#4caf5e;
+  }
+
+  *{ box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
+  html, body{ margin:0; padding:0; width:100%; min-height:100vh;
+    font-family:'FiraCondBook', sans-serif; background:#0a0a0a !important;
+    color:#fff; overflow-x:hidden; }
+
+  .bg-layer{ position:fixed; inset:0; background-image:url('background.jpg');
+    background-size:cover; background-position:center center; background-repeat:no-repeat; z-index:0; }
+  .bg-dim{ position:fixed; inset:0; background:rgba(6,10,7,0.82); z-index:1; }
+
+  .mbanking-topbar{ position:fixed; top:0; left:0; right:0; height:60px;
+    background:rgba(10,14,11,0.95); border-bottom:1px solid rgba(232,177,60,0.25);
+    display:flex; align-items:center; justify-content:space-between;
+    padding:0 16px; z-index:20; backdrop-filter:blur(8px); }
+  .mbanking-brand-container{ display:flex; flex-direction:column; justify-content:center; }
+  .mbanking-brand{ font-family:'OswaldBold', sans-serif; font-size:1.1rem;
+    color:#fff; letter-spacing:0.5px; line-height:1.1; }
+  .mbanking-brand span{ color:var(--emas-terang); }
+  .mbanking-greeting-top{ font-size:0.7rem; color:var(--emas-terang);
+    font-family:'FiraCondBold', sans-serif; margin-top:1px; line-height:1; }
+  .topbar-right-box{ display:flex; align-items:center; gap:12px; }
+  .date-badge-top{ font-family:'FiraCondBold', sans-serif; font-size:0.8rem;
+    color:var(--emas-terang); background:rgba(232,177,60,0.1);
+    border:1px solid rgba(232,177,60,0.3); padding:4px 8px; border-radius:8px; }
+  .profile-circle-btn{ width:36px; height:36px; border-radius:50%;
+    border:2px solid var(--emas-terang); background:#121814; overflow:hidden;
+    display:flex; align-items:center; justify-content:center; cursor:pointer;
+    text-decoration:none; transition:transform 0.2s, box-shadow 0.2s;
+    box-shadow:0 2px 8px rgba(0,0,0,0.5); }
+  .profile-circle-btn:hover{ transform:scale(1.08); box-shadow:0 0 12px rgba(255,209,102,0.4); }
+  .profile-circle-btn svg, .profile-circle-btn img{ width:100%; height:100%; object-fit:cover; }
+  .profile-circle-btn svg{ width:20px; height:20px; fill:var(--emas-terang); padding:2px; }
+
+  .content-wrap{ position:relative; z-index:5; padding:76px 16px 100px 16px;
+    max-width:650px; margin:0 auto; }
+
+  .margin-toolbar{ background:rgba(12,17,13,0.85); border:1.5px solid rgba(232,177,60,0.3);
+    border-radius:12px; padding:12px 16px; margin-bottom:16px;
+    display:flex; justify-content:space-between; align-items:center;
+    box-shadow:0 4px 15px rgba(0,0,0,0.5); }
+  .margin-info-text{ font-size:0.85rem; font-family:'FiraCondBold', sans-serif; color:#fff; }
+  .margin-info-text span{ color:var(--emas-terang); }
+  .btn-setting-margin{ background:#111; border:1px solid var(--emas-terang);
+    color:var(--emas-terang); padding:6px 12px; border-radius:8px; cursor:pointer;
+    display:flex; align-items:center; gap:6px; font-family:'FiraCondBold', sans-serif;
+    font-size:0.8rem; transition:background 0.2s; }
+  .btn-setting-margin:hover{ background:rgba(232,177,60,0.2); }
+
+  .product-container{ max-width:650px; margin:0 auto; }
+
+  .btn-add-product-main{ width:100%; height:48px; background:var(--emas-terang);
+    color:#000; border:none; border-radius:12px; cursor:pointer;
+    font-family:'FiraCondBold', sans-serif; font-size:0.95rem;
+    box-shadow:0 3px 12px rgba(255,209,102,0.35); margin-bottom:16px;
+    display:flex; align-items:center; justify-content:center; gap:8px;
+    transition:transform 0.15s; }
+  .btn-add-product-main:hover{ filter:brightness(1.08); }
+  .btn-add-product-main:active{ transform:scale(0.98); }
+
+  .product-card{ background:rgba(12,17,13,0.92); border:2px solid var(--emas);
+    border-radius:16px; margin-bottom:16px; overflow:hidden;
+    box-shadow:0 6px 20px rgba(0,0,0,0.6); }
+  .product-header{ padding:16px 20px; display:flex; justify-content:space-between;
+    align-items:center; background:rgba(16,23,18,0.95);
+    border-bottom:1px solid rgba(232,177,60,0.25); }
+  .product-title-wrap{ display:flex; align-items:center; gap:10px; }
+  .product-logo-img{ width:32px; height:32px; object-fit:contain; }
+  .product-title{ margin:0; font-family:'FiraCondBold', sans-serif;
+    font-size:1.05rem; color:var(--emas-terang); }
+  .product-body{ padding:16px 20px; background:#080c09; }
+
+  .nominal-grid{ display:grid; grid-template-columns:repeat(auto-fill, minmax(90px, 1fr));
+    gap:8px; margin-top:10px; }
+  .nominal-badge-wrap{ position:relative; }
+  .nominal-badge{ background:#000; border:1px solid rgba(232,177,60,0.4);
+    border-radius:10px; padding:8px 6px; text-align:center; font-size:0.85rem;
+    color:#fff; font-family:'FiraCondBold', sans-serif; cursor:pointer;
+    transition:all 0.2s; width:100%; }
+  .nominal-badge:hover{ background:var(--emas-terang); color:#000; border-color:var(--emas-terang); }
+  .nominal-delete{ position:absolute; top:-7px; right:-7px; width:20px; height:20px;
+    border-radius:50%; background:var(--merah); color:#fff; border:2px solid #080c09;
+    font-size:11px; font-weight:bold; cursor:pointer; display:flex;
+    align-items:center; justify-content:center; padding:0; line-height:1;
+    font-family:Arial, sans-serif; z-index:3; transition:transform 0.15s; }
+  .nominal-delete:hover{ transform:scale(1.15); }
+
+  .empty-state-box{ text-align:center; padding:50px 20px;
+    background:rgba(12,17,13,0.7); border:2px dashed rgba(232,177,60,0.3);
+    border-radius:16px; color:#777; font-family:'FiraCondBook', sans-serif; }
+  .empty-state-box .empty-icon{ font-size:2.4rem; opacity:0.5; margin-bottom:10px; }
+  .empty-state-box .empty-title{ font-family:'FiraCondBold', sans-serif;
+    color:var(--emas-terang); font-size:1.05rem; margin:0 0 6px 0; }
+  .empty-state-box .empty-sub{ margin:0; font-size:0.8rem; line-height:1.5; }
+
+  .table-responsive{ width:100%; overflow-x:auto; }
+  table{ width:100%; border-collapse:collapse; font-size:0.85rem;
+    margin-top:5px; white-space:nowrap; }
+  th, td{ padding:10px 8px; text-align:center;
+    border-bottom:1px solid rgba(255,255,255,0.08); vertical-align:middle; }
+  th{ font-family:'FiraCondBold', sans-serif; color:var(--emas-terang);
+    background:#0d120f; border-bottom:2px solid var(--emas); }
+  .jenis-badge{ display:inline-block; padding:2px 8px; border-radius:6px;
+    font-family:'FiraCondBold', sans-serif; font-size:0.65rem; letter-spacing:0.3px;
+    background:rgba(232,177,60,0.15); color:var(--emas-terang);
+    border:1px solid rgba(232,177,60,0.35); margin-bottom:3px; }
+
+  .btn-action{ width:100%; height:44px; border-radius:12px;
+    font-family:'FiraCondBold', sans-serif; font-size:0.9rem; cursor:pointer;
+    border:none; display:flex; align-items:center; justify-content:center;
+    gap:6px; transition:transform 0.2s ease; margin-top:12px; }
+  .btn-action:active{ transform:scale(0.97); }
+
+  .popupBox{ position:fixed; inset:0; background:rgba(0,0,0,0.85);
+    display:none; justify-content:center; align-items:center;
+    z-index:999999; padding:20px; backdrop-filter:blur(5px); }
+  .popupBox.active{ display:flex; }
+  #jenisPickerModal, #customerPickerModal{ z-index:9999999 !important; }
+
+  .popupContent{ display:flex; flex-direction:column; width:100%; max-width:360px;
+    background:#0d120f; border:2px solid var(--emas-terang); border-radius:16px;
+    padding:20px; box-shadow:0 10px 30px rgba(0,0,0,0.8);
+    max-height:88vh; overflow-y:auto; }
+  .popupContent h2{ margin-top:0; font-family:'FiraCondBold', sans-serif;
+    color:var(--emas-terang); text-align:center; font-size:1.1rem; margin-bottom:12px; }
+
+  input{ width:100%; height:44px; background:#000; border:1.5px solid var(--emas);
+    border-radius:10px; color:white; padding:0 12px; box-sizing:border-box;
+    margin-top:6px; font-family:'FiraCondBook', sans-serif; font-size:0.95rem; outline:none; }
+  input:focus{ border-color:var(--emas-terang); box-shadow:0 0 8px rgba(255,209,102,0.25); }
+
+  .popupContent label{ margin-top:10px; display:block; font-size:0.75rem;
+    color:var(--emas-terang); font-family:'FiraCondBold', sans-serif; text-transform:uppercase; }
+
+  .popupButtonGroup{ display:flex; gap:8px; margin-top:16px; }
+  .cancelButton, .addButton{ flex:1; height:42px; border:none; border-radius:10px;
+    cursor:pointer; font-family:'FiraCondBold', sans-serif; font-size:0.9rem; }
+  .cancelButton{ background:#222; color:#aaa; border:1px solid #444; }
+  .addButton{ background:var(--emas-terang); color:black;
+    box-shadow:0 3px 10px rgba(255,209,102,0.3); }
+
+  .custom-select-trigger{ width:100%; height:44px; background:#000;
+    border:1.5px solid var(--emas); border-radius:10px; color:white; padding:0 12px;
+    margin-top:6px; display:flex; align-items:center; justify-content:space-between;
+    cursor:pointer; font-family:'FiraCondBold', sans-serif; font-size:0.9rem;
+    transition:border-color 0.2s, box-shadow 0.2s; }
+  .custom-select-trigger:hover{ border-color:var(--emas-terang);
+    box-shadow:0 0 8px rgba(255,209,102,0.25); }
+  .custom-select-trigger svg{ width:18px; height:18px; fill:var(--emas-terang); flex-shrink:0; }
+
+  .select-option-item{ background:#111; border:1px solid rgba(232,177,60,0.3);
+    color:#fff; padding:10px 12px; border-radius:8px; text-align:left;
+    font-family:'FiraCondBold', sans-serif; font-size:0.9rem; margin-bottom:8px;
+    cursor:pointer; transition:all 0.2s; position:relative; }
+  .select-option-item:hover, .select-option-item.selected{
+    background:rgba(232,177,60,0.2); border-color:var(--emas-terang); color:var(--emas-terang); }
+  .select-option-item.selected::after{ content:'✓'; position:absolute; right:12px;
+    top:50%; transform:translateY(-50%); color:var(--emas-terang); font-size:1rem; }
+
+  .customModalBox{ position:fixed; inset:0; background:rgba(0,0,0,0.85);
+    display:none; justify-content:center; align-items:center;
+    z-index:10000000; padding:20px; backdrop-filter:blur(6px); }
+  .customModalBox.active{ display:flex; }
+  .customModalContent{ display:flex; flex-direction:column; align-items:center;
+    width:100%; max-width:340px;
+    background:linear-gradient(180deg, #0d120f 0%, #090e0b 100%);
+    border:2px solid var(--emas-terang); border-radius:18px; padding:22px 20px 18px;
+    box-shadow:0 10px 40px rgba(0,0,0,0.85), 0 0 30px rgba(255,209,102,0.08);
+    text-align:center; animation:modalIn 0.22s ease-out; }
+  .customModalContent.warning{ border-color:var(--oranye); }
+  .customModalContent.danger{ border-color:var(--merah); }
+  .customModalContent.success{ border-color:var(--hijau-terang); }
+  @keyframes modalIn{ from{ transform:scale(0.9) translateY(10px); opacity:0; }
+    to{ transform:scale(1) translateY(0); opacity:1; } }
+
+  .modalIcon{ width:52px; height:52px; border-radius:50%;
+    display:flex; align-items:center; justify-content:center; margin-bottom:12px;
+    border:2px solid; }
+  .modalIcon svg{ width:26px; height:26px; fill:currentColor; }
+  .modalIcon.info{ color:var(--emas-terang); border-color:var(--emas-terang);
+    background:rgba(255,209,102,0.1); box-shadow:0 0 22px rgba(255,209,102,0.28); }
+  .modalIcon.warning{ color:var(--oranye); border-color:var(--oranye);
+    background:rgba(255,159,26,0.1); box-shadow:0 0 22px rgba(255,159,26,0.3); }
+  .modalIcon.danger{ color:var(--merah); border-color:var(--merah);
+    background:rgba(255,77,77,0.1); box-shadow:0 0 22px rgba(255,77,77,0.3); }
+  .modalIcon.success{ color:var(--hijau-terang); border-color:var(--hijau-terang);
+    background:rgba(76,175,94,0.1); box-shadow:0 0 22px rgba(76,175,94,0.3); }
+
+  .customModalContent h3{ font-family:'FiraCondBold', sans-serif;
+    color:var(--emas-terang); font-size:0.92rem; margin:0 0 8px 0;
+    letter-spacing:0.6px; text-transform:uppercase; }
+  .customModalContent.warning h3{ color:var(--oranye); }
+  .customModalContent.danger h3{ color:var(--merah); }
+  .customModalContent.success h3{ color:var(--hijau-terang); }
+
+  .customModalContent p{ font-family:'FiraCondBook', sans-serif;
+    color:#cfd6d1; font-size:0.85rem; line-height:1.55; margin:0 0 18px 0;
+    white-space:pre-line; width:100%; }
+
+  .modalBtnGroup{ display:flex; gap:8px; width:100%; }
+  .modalBtnGroup button{ flex:1; height:44px; border:none; border-radius:10px;
+    font-family:'FiraCondBold', sans-serif; font-size:0.88rem; cursor:pointer;
+    transition:transform 0.15s, box-shadow 0.2s; letter-spacing:0.4px; }
+  .modalBtnGroup button:active{ transform:scale(0.97); }
+  .modalOkBtn{ background:var(--emas-terang); color:#000;
+    box-shadow:0 3px 12px rgba(255,209,102,0.35); }
+  .modalOkBtn.warning{ background:var(--oranye); }
+  .modalOkBtn.danger{ background:var(--merah); color:#fff; }
+  .modalOkBtn.success{ background:var(--hijau-terang); color:#000; }
+  .modalCancelBtn{ background:#1c221e; color:#aab2ab; border:1px solid #394039 !important; }
+
+  .mbanking-bottom-nav{ position:fixed; bottom:0; left:0; right:0; height:64px;
+    background:rgba(10,14,11,0.96); border-top:1px solid rgba(232,177,60,0.3);
+    display:grid; grid-template-columns:repeat(7, 1fr); z-index:99999;
+    backdrop-filter:blur(8px); }
+  .nav-item{ display:flex; flex-direction:column; align-items:center;
+    justify-content:center; text-decoration:none; color:#888;
+    font-family:'FiraCondBold', sans-serif; font-size:0.55rem; gap:3px;
+    padding:4px 0; transition:color 0.2s; }
+  .nav-item img{ width:20px; height:20px; object-fit:contain;
+    filter:grayscale(100%) opacity(0.6); transition:filter 0.2s; }
+  .nav-item.active, .nav-item:hover{ color:var(--emas-terang); }
+  .nav-item.active img, .nav-item:hover img{ filter:none; }
+
+  .page-loading-overlay{ position:fixed; inset:0; background:rgba(5,8,6,0.92);
+    z-index:2147483647; display:none; flex-direction:column;
+    align-items:center; justify-content:center; gap:14px; pointer-events:all; }
+  .page-loading-overlay.active{ display:flex; }
+  .page-loading-overlay img{ width:80px; height:80px; object-fit:contain; }
+  .page-loading-overlay .loading-text{ color:var(--emas-terang);
+    font-family:'FiraCondBold', sans-serif; font-size:0.8rem;
+    letter-spacing:1px; text-transform:uppercase; opacity:0.85; }
+
+  .margin-hint-text{ font-size:0.7rem; color:#888; margin-top:4px;
+    font-family:'FiraCondBook', sans-serif; }
+  .margin-hint-text b{ color:var(--emas-terang); }
+</style>
+</head>
+
+<body>
+
+  <div class="bg-layer"></div>
+  <div class="bg-dim"></div>
+
+  <div class="mbanking-topbar">
+    <div class="mbanking-brand-container">
+      <div class="mbanking-brand">Cendetszz <span>by K</span></div>
+      <div class="mbanking-greeting-top">Daftar Produk</div>
+    </div>
+    <div class="topbar-right-box">
+      <div class="date-badge-top" id="dateText">01 Jan 2026</div>
+      <a href="profile.html" class="profile-circle-btn" id="topProfileBtn" title="Pengaturan Profile">
+        <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z"/></svg>
+      </a>
+    </div>
+  </div>
+
+<div class="content-wrap">
+    <div class="margin-toolbar">
+        <div class="margin-info-text">
+            Kenaikan Harga Jual: <span id="displayMarginVal">Rp 2.000</span>
+        </div>
+        <button type="button" class="btn-setting-margin" onclick="openMarginModal()">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
+            Atur Harga Jual
+        </button>
+    </div>
+
+    <button type="button" class="btn-add-product-main" onclick="openAddProduct()">
+        + Tambah Produk
+    </button>
+
+    <div class="product-container" id="productContainer"></div>
+</div>
+
+<!-- POPUP ATUR MARGIN -->
+<div id="marginPopup" class="popupBox">
+    <div class="popupContent">
+        <h2>ATUR TAMBAHAN HARGA JUAL</h2>
+        <p style="text-align:center; color:#aaa; font-size:0.8rem; margin-top:-4px; margin-bottom:12px;">Nominal tambahan otomatis yang dipatok ke harga jual produk digital.</p>
+        <input type="number" id="inputGlobalMargin" placeholder="Masukkan tambahan harga jual (Rp)...">
+        <div class="popupButtonGroup">
+            <button class="cancelButton" onclick="closeMarginPopup()">Batal</button>
+            <button class="addButton" onclick="saveGlobalMargin()">Simpan</button>
+        </div>
+    </div>
+</div>
+
+<!-- POPUP TAMBAH PRODUK (UNIFIED) -->
+<div id="addProductPopup" class="popupBox">
+    <div class="popupContent">
+        <h2>TAMBAH PRODUK</h2>
+
+        <label>Jenis Produk:</label>
+        <div class="custom-select-trigger" onclick="openJenisPicker(event)">
+            <span id="selectedJenisLabel">Pulsa</span>
+            <svg viewBox="0 0 24 24"><path d="M7 10l5 5 5-5z"/></svg>
+        </div>
+
+        <div id="digitalFieldWrap">
+            <label>Nominal (Rp):</label>
+            <input type="number" id="addNominalField" placeholder="Contoh: 20000">
+        </div>
+
+        <div id="customFieldWrap" style="display:none;">
+            <label>Nama Produk / Layanan:</label>
+            <input type="text" id="addNamaField" placeholder="Contoh: IndiHome 20Mbps, Netflix 1 Bulan...">
+        </div>
+
+        <label>Harga Modal (Rp):</label>
+        <input type="number" id="addModalField" placeholder="Contoh: 19500" oninput="autoFillJual()">
+
+        <label>Harga Jual (Rp):</label>
+        <input type="number" id="addJualField" placeholder="Otomatis Modal + Kenaikan">
+
+        <p class="margin-hint-text">
+            Harga jual otomatis = Modal + Kenaikan (<b>Rp <span id="marginHint">2.000</span></b>). Bisa diubah manual.
+        </p>
+
+        <div class="popupButtonGroup">
+            <button class="cancelButton" onclick="closeAddProduct()">Batal</button>
+            <button class="addButton" onclick="saveProduct()">Simpan</button>
+        </div>
+    </div>
+</div>
+
+<!-- POPUP PILIH CUSTOMER -->
+<div id="selectCustomerPopup" class="popupBox">
+    <div class="popupContent">
+        <h2>PILIH CUSTOMER</h2>
+        <p id="selectedProductInfo" style="text-align:center; color:#aaa; font-size:0.8rem; margin-top:-4px; margin-bottom:10px;"></p>
+        
+        <label>Masukkan ke Customer:</label>
+        <div class="custom-select-trigger" id="customerTrigger" onclick="openCustomerPicker(event)">
+            <span id="selectedCustomerLabel">Pilih Customer...</span>
+            <svg viewBox="0 0 24 24"><path d="M7 10l5 5 5-5z"/></svg>
+        </div>
+
+        <div class="popupButtonGroup">
+            <button class="cancelButton" onclick="closeSelectCustomerPopup()">Batal</button>
+            <button class="addButton" onclick="confirmAddProductToDebt()">Tambahkan</button>
+        </div>
+    </div>
+</div>
+
+<!-- MODAL PILIH JENIS PRODUK -->
+<div id="jenisPickerModal" class="popupBox">
+    <div class="popupContent">
+        <h2>PILIH JENIS PRODUK</h2>
+        <div id="jenisPickerList" style="margin-top: 6px; max-height: 50vh; overflow-y: auto;"></div>
+        <div style="margin-top: 12px;">
+            <button type="button" class="cancelButton" style="width:140px; display:block; margin:0 auto;" onclick="closeJenisPicker()">Batal</button>
+        </div>
+    </div>
+</div>
+
+<!-- MODAL PILIH CUSTOMER -->
+<div id="customerPickerModal" class="popupBox">
+    <div class="popupContent">
+        <h2>PILIH CUSTOMER</h2>
+        <div id="customerPickerList" style="margin-top: 6px; max-height: 50vh; overflow-y: auto;"></div>
+        <div style="margin-top: 12px;">
+            <button type="button" class="cancelButton" style="width:140px; display:block; margin:0 auto;" onclick="closeCustomerPicker()">Batal</button>
+        </div>
+    </div>
+</div>
+
+<!-- CUSTOM MODAL -->
+<div id="customModal" class="customModalBox">
+    <div class="customModalContent" id="customModalContent">
+        <div class="modalIcon info" id="modalIcon"></div>
+        <h3 id="modalTitle">Informasi</h3>
+        <p id="modalMessage">-</p>
+        <div class="modalBtnGroup" id="modalBtnGroup"></div>
+    </div>
+</div>
+
+<!-- BOTTOM NAV -->
+<nav class="mbanking-bottom-nav">
+    <a href="index.html" class="nav-item">
+        <img src="icon.png" alt="Home"><span>Home</span>
+    </a>
+    <a href="product.html" class="nav-item active">
+        <img src="voucher.png" alt="Produk"><span>Produk</span>
+    </a>
+    <a href="debt.html" class="nav-item">
+        <img src="debt.png" alt="Utang"><span>Utang</span>
+    </a>
+    <a href="customer.html" class="nav-item">
+        <img src="nama.png" alt="Customer"><span>Customer</span>
+    </a>
+    <a href="recap.html" class="nav-item">
+        <img src="rekap.png" alt="Rekap"><span>Rekap</span>
+    </a>
+    <a href="monthly.html" class="nav-item">
+        <img src="pembukuan.png" alt="Laporan"><span>Laporan</span>
+    </a>
+    <a href="profile.html" class="nav-item" title="Pengaturan Profil">
+        <svg viewBox="0 0 24 24" style="width:20px; height:20px; fill:currentColor; filter:none;"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z"/></svg>
+        <span>Profil</span>
+    </a>
+</nav>
+
+<!-- PAGE LOADING OVERLAY -->
+<div id="pageLoadingOverlay" class="page-loading-overlay">
+    <img src="loading.webp" alt="Loading...">
+    <div class="loading-text">Memuat Halaman...</div>
+</div>
+
+<script>
+/* =========================================================
+   PAGE LOADING OVERLAY
+========================================================= */
+(function preloadLoadingGif(){ const img = new Image(); img.src = 'loading.webp'; })();
+function showPageLoading(){ const ov = document.getElementById('pageLoadingOverlay'); if (ov) ov.classList.add('active'); }
+function navigateWithLoading(url){ if (!url) return; showPageLoading(); setTimeout(() => { window.location.href = url; }, 450); }
+
+document.addEventListener('click', function(e){
+    const link = e.target.closest('a[href]');
+    if (!link) return;
+    if (link.classList.contains('nav-item')) return;
+    const href = link.getAttribute('href');
+    if (!href) return;
+    if (href.startsWith('http') || href.startsWith('javascript') ||
+        href.startsWith('#') || href.startsWith('mailto') ||
+        href.startsWith('tel') || href.startsWith('blob')) return;
+    if (!href.endsWith('.html')) return;
+    e.preventDefault();
+    navigateWithLoading(href);
+});
+
+document.querySelectorAll('.nav-item').forEach(item => {
+  const href = item.getAttribute('href');
+  if (item.tagName === 'A' && href && href.endsWith('.html')){
+    item.addEventListener('click', function(e){
+      e.preventDefault();
+      navigateWithLoading(href);
+    });
+  }
+});
+
+/* =========================================================
+   CUSTOM MODAL
+========================================================= */
+const ICON_INFO = '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>';
+const ICON_WARNING = '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M1 21h22L12 2 1 21zm12-3h-2v-2h2v2zm0-4h-2v-4h2v4z"/></svg>';
+const ICON_DANGER = '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>';
+const ICON_SUCCESS = '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>';
+
+function showAlert(message, title = "Informasi", type = "info"){
+    return new Promise(resolve => {
+        const modal = document.getElementById("customModal");
+        const content = document.getElementById("customModalContent");
+        const icon = document.getElementById("modalIcon");
+        content.className = "customModalContent";
+        if(type === "warning") content.classList.add("warning");
+        else if(type === "danger") content.classList.add("danger");
+        else if(type === "success") content.classList.add("success");
+        icon.className = "modalIcon " + type;
+        if(type === "danger") icon.innerHTML = ICON_DANGER;
+        else if(type === "warning") icon.innerHTML = ICON_WARNING;
+        else if(type === "success") icon.innerHTML = ICON_SUCCESS;
+        else icon.innerHTML = ICON_INFO;
+        document.getElementById("modalTitle").innerText = title;
+        document.getElementById("modalMessage").innerText = message;
+        const okBtnClass = type === "danger" ? "modalOkBtn danger"
+                        : type === "warning" ? "modalOkBtn warning"
+                        : type === "success" ? "modalOkBtn success" : "modalOkBtn";
+        document.getElementById("modalBtnGroup").innerHTML = `<button class="${okBtnClass}" id="modalOk">OK</button>`;
+        document.getElementById("modalOk").onclick = () => { modal.classList.remove("active"); resolve(true); };
+        modal.classList.add("active");
+    });
+}
+
+function showConfirm(message, title = "Konfirmasi", type = "warning", okText = "Ya, Lanjut", cancelText = "Batal"){
+    return new Promise(resolve => {
+        const modal = document.getElementById("customModal");
+        const content = document.getElementById("customModalContent");
+        const icon = document.getElementById("modalIcon");
+        content.className = "customModalContent";
+        if(type === "danger") content.classList.add("danger");
+        else if(type === "warning") content.classList.add("warning");
+        else if(type === "success") content.classList.add("success");
+        icon.className = "modalIcon " + type;
+        if(type === "danger") icon.innerHTML = ICON_DANGER;
+        else if(type === "warning") icon.innerHTML = ICON_WARNING;
+        else if(type === "success") icon.innerHTML = ICON_SUCCESS;
+        else icon.innerHTML = ICON_INFO;
+        document.getElementById("modalTitle").innerText = title;
+        document.getElementById("modalMessage").innerText = message;
+        const okBtnClass = type === "danger" ? "modalOkBtn danger"
+                        : type === "warning" ? "modalOkBtn warning"
+                        : type === "success" ? "modalOkBtn success" : "modalOkBtn";
+        document.getElementById("modalBtnGroup").innerHTML = `
+            <button class="modalCancelBtn" id="modalCancel">${cancelText}</button>
+            <button class="${okBtnClass}" id="modalOk">${okText}</button>
+        `;
+        document.getElementById("modalOk").onclick = () => { modal.classList.remove("active"); resolve(true); };
+        document.getElementById("modalCancel").onclick = () => { modal.classList.remove("active"); resolve(false); };
+        modal.classList.add("active");
+    });
+}
+
+/* =========================================================
+   CATEGORY META (digital categories yang punya icon & card)
+========================================================= */
+const CATEGORY_META = {
+    "Pulsa":   { icon: "icon.png",      label: "Pulsa" },
+    "DANA":    { icon: "DANA.png",      label: "DANA" },
+    "GoPay":   { icon: "GoPay.png",     label: "GoPay" },
+    "OVO":     { icon: "ShopeePay.png", label: "OVO" },
+    "SeaBank": { icon: "SeaBank.png",   label: "SeaBank" }
+};
+
+const DIGITAL_JENIS = Object.keys(CATEGORY_META);
+
+const CUSTOM_JENIS_LIST = [
+    "Paket Internet",
+    "Membership",
+    "Token Listrik",
+    "Game Voucher",
+    "Voucher Digital",
+    "Layanan Jasa",
+    "Peralatan / Barang",
+    "Lainnya"
+];
+
+const ALL_JENIS = [...DIGITAL_JENIS, ...CUSTOM_JENIS_LIST];
+
+/* =========================================================
+   STATE
+========================================================= */
+let globalMargin = parseInt(localStorage.getItem("globalMargin")) || 2000;
+
+let categoryProducts = (function(){
+    const def = {};
+    DIGITAL_JENIS.forEach(k => def[k] = []);
+    const saved = JSON.parse(localStorage.getItem("categoryProducts")) || {};
+    Object.keys(def).forEach(k => { if(Array.isArray(saved[k])) def[k] = saved[k]; });
+    return def;
+})();
+
+let customProducts = JSON.parse(localStorage.getItem("customProducts")) || [];
+
+let selectedJenisTemp = "Pulsa";
+let selectedProductTemp = { nama: "", modal: 0, harga: 0 };
+let selectedCustIdTemp = "";
+
+/* =========================================================
+   INIT
+========================================================= */
+window.onload = function(){
+    updateDateOnly();
+    updateMarginDisplay();
+    renderAll();
+
+    const savedPic = localStorage.getItem("profile_picture") || localStorage.getItem("user_avatar");
+    if(savedPic){
+        document.getElementById("topProfileBtn").innerHTML = `<img src="${savedPic}" alt="Profile">`;
+    }
+
+    document.querySelectorAll(".popupBox").forEach(box => {
+        box.addEventListener("click", e => { if(e.target === box) box.classList.remove("active"); });
+    });
+}
+
+function updateDateOnly(){
+    const now = new Date();
+    document.getElementById("dateText").innerText = now.toLocaleDateString('id-ID', { day:'2-digit', month:'short', year:'numeric' });
+}
+
+function updateMarginDisplay(){
+    document.getElementById("displayMarginVal").innerText = `Rp ${globalMargin.toLocaleString("id-ID")}`;
+}
+
+/* =========================================================
+   RENDER SEMUA (dynamic — kosong jika belum ada produk)
+========================================================= */
+function renderAll(){
+    const container = document.getElementById("productContainer");
+    let html = "";
+
+    // ===== DIGITAL CATEGORY CARDS =====
+    DIGITAL_JENIS.forEach(cat => {
+        const products = categoryProducts[cat] || [];
+        if(products.length === 0) return;
+
+        const meta = CATEGORY_META[cat];
+        const badges = products.map((p, i) => {
+            const safeName = `${cat} Rp ${p.nominal.toLocaleString('id-ID')}`.replace(/'/g, "\\'");
+            return `
+                <div class="nominal-badge-wrap">
+                    <div class="nominal-badge" onclick="prepareAddProductToDebt('${safeName}', ${p.modal}, ${p.harga})">
+                        Rp ${p.nominal.toLocaleString('id-ID')}
+                    </div>
+                    <button type="button" class="nominal-delete"
+                        onclick="event.stopPropagation(); deleteDigitalProduct('${cat}', ${i})"
+                        title="Hapus nominal">×</button>
+                </div>
+            `;
+        }).join("");
+
+        html += `
+            <div class="product-card">
+                <div class="product-header">
+                    <div class="product-title-wrap">
+                        <img src="${meta.icon}" class="product-logo-img" alt="${cat}">
+                        <h3 class="product-title">${meta.label}</h3>
+                    </div>
+                </div>
+                <div class="product-body">
+                    <p style="font-size:0.8rem; color:#aaa; margin:0 0 8px 0;">Klik nominal untuk tambahkan ke utang customer:</p>
+                    <div class="nominal-grid">${badges}</div>
+                </div>
+            </div>
+        `;
+    });
+
+    // ===== CUSTOM PRODUCTS TABLE =====
+    if(customProducts.length > 0){
+        const rows = customProducts.map((prod, index) => {
+            const modal = prod.modal || 0;
+            const harga = prod.hargaJual || 0;
+            const cuan = harga - modal;
+            const safeNama = (prod.nama || '').replace(/'/g, "\\'");
+            return `
+                <tr>
+                    <td style="cursor:pointer; color:var(--emas-terang); font-family:'FiraCondBold', sans-serif;"
+                        onclick="prepareAddProductToDebt('${safeNama}', ${modal}, ${harga})"
+                        title="Klik untuk masukkan ke utang customer">
+                        <div class="jenis-badge">${prod.jenis}</div><br>${prod.nama}
+                    </td>
+                    <td>
+                        <span style="color:#aaa;">Modal: Rp ${modal.toLocaleString('id-ID')}</span><br>
+                        <span style="color:var(--emas-terang);">Jual: Rp ${harga.toLocaleString('id-ID')}</span><br>
+                        <small style="color:#4caf5e;">Cuan: Rp ${cuan.toLocaleString('id-ID')}</small>
+                    </td>
+                    <td>
+                        <button type="button" onclick="deleteCustomProduct(${index})"
+                            style="background:#ff3b3b; color:white; border:none; border-radius:6px;
+                            padding:5px 8px; cursor:pointer; font-size:10px;
+                            font-family:'FiraCondBold', sans-serif;">Hapus</button>
+                    </td>
+                </tr>
+            `;
+        }).join("");
+
+        html += `
+            <div class="product-card">
+                <div class="product-header">
+                    <div class="product-title-wrap">
+                        <img src="nama.png" class="product-logo-img" alt="Lainnya">
+                        <h3 class="product-title">Produk / Layanan Lainnya</h3>
+                    </div>
+                </div>
+                <div class="product-body">
+                    <div class="table-responsive">
+                        <table>
+                            <thead>
+                                <tr><th>Nama Produk</th><th>Modal / Jual / Cuan</th><th>Aksi</th></tr>
+                            </thead>
+                            <tbody>${rows}</tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        `;
+    }
+
+    // ===== EMPTY STATE =====
+    if(html === ""){
+        html = `
+            <div class="empty-state-box">
+                <div class="empty-icon">📦</div>
+                <p class="empty-title">Belum Ada Produk</p>
+                <p class="empty-sub">Klik <b>+ Tambah Produk</b> di atas untuk mulai.<br>Produk akan otomatis dikelompokkan sesuai jenisnya.</p>
+            </div>
+        `;
+    }
+
+    container.innerHTML = html;
+}
+
+/* =========================================================
+   MARGIN
+========================================================= */
+function openMarginModal(){
+    document.getElementById("inputGlobalMargin").value = globalMargin;
+    document.getElementById("marginPopup").classList.add("active");
+}
+function closeMarginPopup(){
+    document.getElementById("marginPopup").classList.remove("active");
+}
+async function saveGlobalMargin(){
+    const val = parseInt(document.getElementById("inputGlobalMargin").value);
+    if(isNaN(val) || val < 0){
+        await showAlert("Masukkan nominal tambahan harga jual yang valid (angka ≥ 0).", "Nominal Tidak Valid", "warning");
+        return;
+    }
+    globalMargin = val;
+    localStorage.setItem("globalMargin", globalMargin);
+    updateMarginDisplay();
+    closeMarginPopup();
+    await showAlert("Kenaikan harga jual berhasil disimpan: Rp " + val.toLocaleString("id-ID"), "Berhasil", "success");
+}
+
+/* =========================================================
+   ADD PRODUCT POPUP (UNIFIED)
+========================================================= */
+function openAddProduct(){
+    selectedJenisTemp = "Pulsa";
+    updateJenisUI();
+    document.getElementById("addNominalField").value = "";
+    document.getElementById("addNamaField").value = "";
+    document.getElementById("addModalField").value = "";
+    document.getElementById("addJualField").value = "";
+    document.getElementById("marginHint").innerText = globalMargin.toLocaleString("id-ID");
+    document.getElementById("addProductPopup").classList.add("active");
+}
+
+function closeAddProduct(){
+    document.getElementById("addProductPopup").classList.remove("active");
+}
+
+function updateJenisUI(){
+    document.getElementById("selectedJenisLabel").innerText = selectedJenisTemp;
+    const isDigital = DIGITAL_JENIS.includes(selectedJenisTemp);
+    document.getElementById("digitalFieldWrap").style.display = isDigital ? "block" : "none";
+    document.getElementById("customFieldWrap").style.display = isDigital ? "none" : "block";
+}
+
+function autoFillJual(){
+    const modal = parseInt(document.getElementById("addModalField").value);
+    if(!isNaN(modal) && modal >= 0){
+        document.getElementById("addJualField").value = modal + globalMargin;
+    }
+}
+
+async function saveProduct(){
+    const isDigital = DIGITAL_JENIS.includes(selectedJenisTemp);
+    const modalRaw = document.getElementById("addModalField").value;
+    const jualRaw  = document.getElementById("addJualField").value;
+
+    if(modalRaw === "" || isNaN(parseInt(modalRaw)) || parseInt(modalRaw) < 0){
+        await showAlert("Harga modal belum valid. Masukkan angka ≥ 0.", "Harga Modal Tidak Valid", "warning");
+        return;
+    }
+
+    const modal = parseInt(modalRaw);
+    const harga = (jualRaw !== "" && !isNaN(parseInt(jualRaw)) && parseInt(jualRaw) >= 0)
+                  ? parseInt(jualRaw) : (modal + globalMargin);
+
+    if(isDigital){
+        const nomRaw = document.getElementById("addNominalField").value;
+        if(nomRaw === "" || isNaN(parseInt(nomRaw)) || parseInt(nomRaw) <= 0){
+            await showAlert("Nominal belum valid. Masukkan angka > 0.", "Nominal Tidak Valid", "warning");
+            return;
+        }
+        const nominal = parseInt(nomRaw);
+        if(!categoryProducts[selectedJenisTemp]) categoryProducts[selectedJenisTemp] = [];
+        categoryProducts[selectedJenisTemp].push({ nominal, modal, harga });
+        localStorage.setItem("categoryProducts", JSON.stringify(categoryProducts));
+        renderAll();
+        closeAddProduct();
+        await showAlert(
+            `${selectedJenisTemp} Rp ${nominal.toLocaleString('id-ID')} berhasil ditambahkan.`,
+            "Berhasil Ditambahkan", "success"
+        );
+    } else {
+        const nama = document.getElementById("addNamaField").value.trim();
+        if(nama === ""){
+            await showAlert("Nama produk belum diisi.", "Data Belum Lengkap", "warning");
+            return;
+        }
+        customProducts.push({
+            jenis: selectedJenisTemp,
+            nama: nama,
+            modal: modal,
+            hargaJual: harga
+        });
+        localStorage.setItem("customProducts", JSON.stringify(customProducts));
+        renderAll();
+        closeAddProduct();
+        await showAlert(`Produk "${nama}" berhasil ditambahkan.`, "Berhasil", "success");
+    }
+}
+
+/* =========================================================
+   DELETE
+========================================================= */
+async function deleteDigitalProduct(cat, index){
+    if(!categoryProducts[cat] || !categoryProducts[cat][index]) return;
+    const item = categoryProducts[cat][index];
+    const ok = await showConfirm(
+        `Hapus nominal Rp ${item.nominal.toLocaleString('id-ID')} dari ${cat}?`,
+        "Konfirmasi Hapus", "danger", "Ya, Hapus"
+    );
+    if(!ok) return;
+    categoryProducts[cat].splice(index, 1);
+    localStorage.setItem("categoryProducts", JSON.stringify(categoryProducts));
+    renderAll();
+}
+
+async function deleteCustomProduct(index){
+    if(!customProducts[index]) return;
+    const prod = customProducts[index];
+    const ok = await showConfirm(
+        `Hapus produk "${prod.nama}"?`,
+        "Konfirmasi Hapus", "danger", "Ya, Hapus"
+    );
+    if(!ok) return;
+    customProducts.splice(index, 1);
+    localStorage.setItem("customProducts", JSON.stringify(customProducts));
+    renderAll();
+}
+
+/* =========================================================
+   JENIS PICKER (digital + custom)
+========================================================= */
+function openJenisPicker(event){
+    if(event) event.stopPropagation();
+    const list = document.getElementById("jenisPickerList");
+    list.innerHTML = "";
+
+    ALL_JENIS.forEach(jenis => {
+        const div = document.createElement("div");
+        div.className = "select-option-item" + (jenis === selectedJenisTemp ? " selected" : "");
+        div.innerText = jenis;
+        div.onclick = function(e){
+            e.stopPropagation();
+            selectedJenisTemp = jenis;
+            updateJenisUI();
+            closeJenisPicker();
+        };
+        list.appendChild(div);
+    });
+
+    document.getElementById("jenisPickerModal").classList.add("active");
+}
+function closeJenisPicker(){
+    document.getElementById("jenisPickerModal").classList.remove("active");
+}
+
+/* =========================================================
+   CUSTOMER PICKER
+========================================================= */
+function openCustomerPicker(event){
+    if(event) event.stopPropagation();
+    const customers = JSON.parse(localStorage.getItem("customers")) || [];
+    const list = document.getElementById("customerPickerList");
+    list.innerHTML = "";
+
+    if(customers.length === 0){
+        list.innerHTML = `<p style="color:#777; text-align:center; padding:12px;">Belum ada customer terdaftar.</p>`;
+    } else {
+        customers.forEach(cust => {
+            const div = document.createElement("div");
+            div.className = "select-option-item" + (cust.id === selectedCustIdTemp ? " selected" : "");
+            div.innerText = `${cust.id} - ${cust.name}`;
+            div.onclick = function(e){
+                e.stopPropagation();
+                selectedCustIdTemp = cust.id;
+                document.getElementById("selectedCustomerLabel").innerText = `${cust.id} - ${cust.name}`;
+                closeCustomerPicker();
+            };
+            list.appendChild(div);
+        });
+    }
+    document.getElementById("customerPickerModal").classList.add("active");
+}
+function closeCustomerPicker(){
+    document.getElementById("customerPickerModal").classList.remove("active");
+}
+
+/* =========================================================
+   INTEGRASI KE DEBT
+========================================================= */
+async function prepareAddProductToDebt(nama, modal, harga){
+    selectedProductTemp = { nama, modal, harga };
+    const customers = JSON.parse(localStorage.getItem("customers")) || [];
+    if(customers.length === 0){
+        await showAlert("Belum ada customer terdaftar.\n\nTambahkan customer terlebih dahulu di menu Customer.", "Customer Kosong", "warning");
+        return;
+    }
+    selectedCustIdTemp = customers[0].id;
+    document.getElementById("selectedCustomerLabel").innerText = `${customers[0].id} - ${customers[0].name}`;
+    document.getElementById("selectedProductInfo").innerText = `Produk: ${nama} (Jual: Rp ${harga.toLocaleString("id-ID")})`;
+    document.getElementById("selectCustomerPopup").classList.add("active");
+}
+function closeSelectCustomerPopup(){
+    document.getElementById("selectCustomerPopup").classList.remove("active");
+}
+async function confirmAddProductToDebt(){
+    const chosenCustId = selectedCustIdTemp;
+    if(!chosenCustId){
+        await showAlert("Pilih customer terlebih dahulu sebelum menambahkan produk.", "Customer Belum Dipilih", "warning");
+        return;
+    }
+    let debts = JSON.parse(localStorage.getItem("debts")) || {};
+    if(!debts[chosenCustId]) debts[chosenCustId] = [];
+    debts[chosenCustId].push({
+        produk: selectedProductTemp.nama,
+        modal: selectedProductTemp.modal,
+        harga: selectedProductTemp.harga,
+        dibayar: 0, tip: 0, excluded: false, isLogged: false,
+        waktu: new Date().toLocaleString("id-ID")
+    });
+    localStorage.setItem("debts", JSON.stringify(debts));
+    closeSelectCustomerPopup();
+    await showAlert(`Produk "${selectedProductTemp.nama}" berhasil ditambahkan ke utang customer ${chosenCustId}.`, "Berhasil Ditambahkan", "success");
+}
+</script>
+
+</body>
+</html>
